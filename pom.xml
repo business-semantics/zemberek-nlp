@@ -6,7 +6,7 @@
 
   <groupId>zemberek-nlp</groupId>
   <artifactId>zemberek-nlp</artifactId>
-  <version>0.17.1</version>
+  <version>0.17.1-smartkyc-1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
 
@@ -30,9 +30,13 @@
 
   <distributionManagement>
     <repository>
-      <id>local-repo-clone</id>
-      <url>file://${user.home}/projects/maven-repo</url>
+      <id>ext-release-local</id>
+      <url>https://artifactory.smartkyc.com/artifactory/ext-release-local</url>
     </repository>
+    <snapshotRepository>
+      <id>ext-snapshot-local</id>
+      <url>https://artifactory.smartkyc.com/artifactory/ext-snapshot-local</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <properties>
@@ -216,17 +220,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Repository for Maven</name>
-      <url>http://download.java.net/maven/2/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
 
 </project>
