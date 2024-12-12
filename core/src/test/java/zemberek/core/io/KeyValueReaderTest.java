@@ -1,23 +1,26 @@
 package zemberek.core.io;
 
 import com.google.common.io.Resources;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class KeyValueReaderTest {
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
-  URL key_value_colon_separator = Resources.getResource("io/key-value-colon-separator.txt");
+public class KeyValueReaderTest
+{
 
-  @Test
-  public void testReader() throws IOException {
-    Map<String, String> map = new KeyValueReader(":")
-        .loadFromFile(new File(key_value_colon_separator.getFile()));
-    Assert.assertEquals(map.size(), 4);
-    Assert.assertTrue(TestUtil.containsAllKeys(map, "1", "2", "3", "4"));
-    Assert.assertTrue(TestUtil.containsAllValues(map, "bir", "iki", "uc", "dort"));
-  }
+	@Test
+	public void testReader() throws IOException
+	{
+		try (final InputStream is = KeyValueReaderTest.class.getResourceAsStream("/io/key-value-colon-separator.txt");) {
+			Map<String, String> map = new KeyValueReader(":").loadFromStream(is);
+			Assert.assertEquals(map.size(), 4);
+			Assert.assertTrue(TestUtil.containsAllKeys(map, "1", "2", "3", "4"));
+			Assert.assertTrue(TestUtil.containsAllValues(map, "bir", "iki", "uc", "dort"));
+		}
+	}
 }
