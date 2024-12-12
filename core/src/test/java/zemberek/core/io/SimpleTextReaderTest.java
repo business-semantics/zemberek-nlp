@@ -8,6 +8,8 @@ import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.Test;
 
@@ -15,19 +17,19 @@ public class SimpleTextReaderTest {
 
   private static String curDir = getProperty("user.dir");
 
-  URL utf8_tr_with_bom = Resources.getResource("io/turkish_utf8_with_BOM.txt");
-  URL multi_line_text_file = Resources.getResource("io/multi_line_text_file.txt");
+  String utf8_tr_with_bom = URLDecoder.decode(Resources.getResource("io/turkish_utf8_with_BOM.txt").getPath());
+  String multi_line_text_file = URLDecoder.decode(Resources.getResource("io/multi_line_text_file.txt").getPath());
 
 
   @Test
   public void testUtf8() throws IOException {
-    String content = new SimpleTextReader(utf8_tr_with_bom.getFile(), "utf-8").asString();
+    String content = new SimpleTextReader(utf8_tr_with_bom, "utf-8").asString();
     assertEquals(content, "\u015fey");
   }
 
   @Test
   public void multilineTest() throws IOException {
-    List<String> list = new SimpleTextReader(multi_line_text_file.getFile()).asStringList();
+    List<String> list = new SimpleTextReader(multi_line_text_file).asStringList();
     assertEquals(list.size(), 17);
     assertEquals(list.get(1), "uno");
     //test trim
@@ -36,7 +38,7 @@ public class SimpleTextReaderTest {
 
   @Test
   public void multilineConstarintTest() throws IOException {
-    List<String> list = new SimpleTextReader.Builder(multi_line_text_file.getFile())
+    List<String> list = new SimpleTextReader.Builder(multi_line_text_file)
         .allowMatchingRegexp("^[^#]")
         .ignoreWhiteSpaceLines()
         .trim()
@@ -62,14 +64,14 @@ public class SimpleTextReaderTest {
 
   @Test
   public void asStringTest() throws IOException {
-    String a = new SimpleTextReader(multi_line_text_file.getFile()).asString();
+    String a = new SimpleTextReader(multi_line_text_file).asString();
     System.out.println(a);
   }
 
   @Test
   public void iterableTest() throws IOException {
     int i = 0;
-    for (String s : new SimpleTextReader(multi_line_text_file.getFile()).getIterableReader()) {
+    for (String s : new SimpleTextReader(multi_line_text_file).getIterableReader()) {
       if (i == 1) {
         assertEquals(s.trim(), "uno");
       }
@@ -86,7 +88,7 @@ public class SimpleTextReaderTest {
 
   @Test
   public void lineIteratorTest2() throws IOException {
-    try (LineIterator li = new SimpleTextReader(multi_line_text_file.getFile()).getLineIterator()) {
+    try (LineIterator li = new SimpleTextReader(multi_line_text_file).getLineIterator()) {
       while (li.hasNext()) {
         out.println(li.next().toUpperCase());
       }
@@ -96,7 +98,7 @@ public class SimpleTextReaderTest {
   @Test
   public void lineIteratorWithConstraint() throws IOException {
     try (LineIterator li = new SimpleTextReader
-        .Builder(multi_line_text_file.getFile())
+        .Builder(multi_line_text_file)
         .ignoreWhiteSpaceLines()
         .trim()
         .build().getLineIterator()) {

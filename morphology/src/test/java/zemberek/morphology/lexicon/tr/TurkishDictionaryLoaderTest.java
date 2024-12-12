@@ -14,6 +14,8 @@ import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -36,8 +38,9 @@ public class TurkishDictionaryLoaderTest {
 
   @Test
   public void loadNounsFromFileTest() throws IOException {
+    final String resource = URLDecoder.decode(Resources.getResource("test-lexicon-nouns.txt").getPath());
     RootLexicon items = TurkishDictionaryLoader
-        .load(new File(Resources.getResource("test-lexicon-nouns.txt").getFile()));
+        .load(new File(resource));
 
     Assert.assertFalse(items.isEmpty());
     for (DictionaryItem item : items) {
@@ -210,15 +213,17 @@ public class TurkishDictionaryLoaderTest {
     for (String s : hist) {
       all.add(Strings.subStringUntilFirst(s, " ").trim());
     }
-    SimpleTextWriter.oneShotUTF8Writer(new File(Resources.getResource("z2-vocab.tr").getFile()))
+    final String resource = URLDecoder.decode(Resources.getResource("z2-vocab.tr").getPath());
+    SimpleTextWriter.oneShotUTF8Writer(new File(resource))
         .writeLines(all);
   }
 
   @Test
   @Ignore("Not a unit test")
   public void shouldPrintItemsInDevlDictionary() throws IOException {
+    final String resource = URLDecoder.decode(Resources.getResource("dev-lexicon.txt").getPath());
     RootLexicon items = TurkishDictionaryLoader
-        .load(new File(Resources.getResource("dev-lexicon.txt").getFile()));
+        .load(new File(resource));
     for (DictionaryItem item : items) {
       System.out.println(item);
     }

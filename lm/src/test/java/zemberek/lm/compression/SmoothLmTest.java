@@ -6,6 +6,7 @@ import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ import zemberek.lm.backoff.SimpleBackoffNgramModel;
 
 public class SmoothLmTest {
 
-  URL TINY_ARPA_URL = Resources.getResource("tiny.arpa");
+  String TINY_ARPA_URL = URLDecoder.decode(Resources.getResource("tiny.arpa").getPath());
 
   @Test
   public void testGeneration() throws IOException {
@@ -38,7 +39,7 @@ public class SmoothLmTest {
   File getTinyArpaFile() throws IOException {
     File tmp = File.createTempFile("tiny", ".arpa");
     Log.info("Temporary test Arpa model file %s", tmp);
-    Files.copy(new File(TINY_ARPA_URL.getFile()), tmp);
+    Files.copy(new File(TINY_ARPA_URL), tmp);
     return tmp;
   }
 
