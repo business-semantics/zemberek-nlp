@@ -124,14 +124,6 @@
             <include>tr/*.*</include>
           </excludes>
         </configuration>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -172,12 +164,6 @@
                 all, server, examples, experiment
               </excludeArtifactIds>
             </configuration>
-          </execution>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>sources</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
