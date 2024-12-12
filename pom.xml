@@ -4,7 +4,7 @@
 
   <groupId>zemberek-nlp</groupId>
   <artifactId>zemberek-nlp</artifactId>
-  <version>0.17.1-smartkyc-1.0</version>
+  <version>0.17.1-smartkyc-2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
 
@@ -33,7 +33,7 @@
     <connection>scm:git:https://github.com/business-semantics/zemberek-nlp.git</connection>
     <developerConnection>scm:git:https://github.com/business-semantics/zemberek-nlp.git</developerConnection>
     <url>https://github.com/business-semantics/zemberek-nlp</url>
-    <tag>zemberek-nlp-0.17.1-smartkyc-1.0</tag>
+    <tag>**</tag>
   </scm>
 
   <properties>
