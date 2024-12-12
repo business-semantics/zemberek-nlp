@@ -31,6 +31,13 @@
     </snapshotRepository>
   </distributionManagement>
 
+  <scm>
+    <connection>scm:git:https://github.com/business-semantics/zemberek-nlp.git</connection>
+    <developerConnection>scm:git:https://github.com/business-semantics/zemberek-nlp.git</developerConnection>
+    <url>https://github.com/business-semantics/zemberek-nlp</url>
+    <tag>**</tag>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <protobuf.input.directory>${project.basedir}/src/main/proto</protobuf.input.directory>
