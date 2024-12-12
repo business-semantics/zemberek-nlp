@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import org.junit.Test;
@@ -16,35 +15,36 @@ public class SimpleTextReaderTest {
 
   private static String curDir = getProperty("user.dir");
 
+  URL utf8_tr_with_bom = Resources.getResource("io/turkish_utf8_with_BOM.txt");
+  URL multi_line_text_file = Resources.getResource("io/multi_line_text_file.txt");
+
+
   @Test
   public void testUtf8() throws IOException {
-    try (InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/turkish_utf8_with_BOM.txt")) {
-      String content = new SimpleTextReader(is, "utf-8").asString();
-      assertEquals(content, "\u015fey");
-    }
+    String content = new SimpleTextReader(utf8_tr_with_bom.getFile(), "utf-8").asString();
+    assertEquals(content, "\u015fey");
   }
 
   @Test
-  public void multilineTest() throws IOException
-  {
-    try (InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/multi_line_text_file.txt")) {
-      List<String> list = new SimpleTextReader(is).asStringList();
-      assertEquals(list.size(), 17);
-      assertEquals(list.get(1), "uno");
-      //test trim
-      assertEquals(list.get(2), "  dos");
-    }
+  public void multilineTest() throws IOException {
+    List<String> list = new SimpleTextReader(multi_line_text_file.getFile()).asStringList();
+    assertEquals(list.size(), 17);
+    assertEquals(list.get(1), "uno");
+    //test trim
+    assertEquals(list.get(2), "  dos");
   }
 
   @Test
   public void multilineConstarintTest() throws IOException {
-    try (InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/multi_line_text_file.txt")) {
-      List<String> list = new SimpleTextReader.Builder(is).allowMatchingRegexp("^[^#]")
-              .ignoreWhiteSpaceLines().trim().build().asStringList();
+    List<String> list = new SimpleTextReader.Builder(multi_line_text_file.getFile())
+        .allowMatchingRegexp("^[^#]")
+        .ignoreWhiteSpaceLines()
+        .trim()
+        .build()
+        .asStringList();
     assertEquals(list.size(), 12);
     assertEquals(list.get(0), "uno");
     assertEquals(list.get(1), "dos");
-    }
   }
 
   public void templateTest() throws IOException {
@@ -62,46 +62,41 @@ public class SimpleTextReaderTest {
 
   @Test
   public void asStringTest() throws IOException {
-    try(InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/multi_line_text_file.txt")) {
-      String a = new SimpleTextReader(is).asString();
-      System.out.println(a);
-    }
+    String a = new SimpleTextReader(multi_line_text_file.getFile()).asString();
+    System.out.println(a);
   }
 
   @Test
   public void iterableTest() throws IOException {
-    try(InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/multi_line_text_file.txt")) {
-      int i = 0;
-      for (String s : new SimpleTextReader(is).getIterableReader()) {
-        if (i == 1) {
-          assertEquals(s.trim(), "uno");
-        }
-        if (i == 2) {
-          assertEquals(s.trim(), "dos");
-        }
-        if (i == 3) {
-          assertEquals(s.trim(), "tres");
-        }
-        i++;
+    int i = 0;
+    for (String s : new SimpleTextReader(multi_line_text_file.getFile()).getIterableReader()) {
+      if (i == 1) {
+        assertEquals(s.trim(), "uno");
       }
-      assertEquals(i, 17);
+      if (i == 2) {
+        assertEquals(s.trim(), "dos");
+      }
+      if (i == 3) {
+        assertEquals(s.trim(), "tres");
+      }
+      i++;
     }
+    assertEquals(i, 17);
   }
 
   @Test
   public void lineIteratorTest2() throws IOException {
-    try (InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/multi_line_text_file.txt");
-            LineIterator li = new SimpleTextReader(is).getLineIterator()) {
-        while (li.hasNext()) {
-          out.println(li.next().toUpperCase());
+    try (LineIterator li = new SimpleTextReader(multi_line_text_file.getFile()).getLineIterator()) {
+      while (li.hasNext()) {
+        out.println(li.next().toUpperCase());
       }
     }
   }
 
   @Test
   public void lineIteratorWithConstraint() throws IOException {
-    try (InputStream is = SimpleTextReaderTest.class.getResourceAsStream("/io/multi_line_text_file.txt"); LineIterator li = new SimpleTextReader
-        .Builder(is)
+    try (LineIterator li = new SimpleTextReader
+        .Builder(multi_line_text_file.getFile())
         .ignoreWhiteSpaceLines()
         .trim()
         .build().getLineIterator()) {
